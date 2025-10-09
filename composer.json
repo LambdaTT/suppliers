@@ -1,6 +1,6 @@
 {
-  "name": "lambdatt-php/auxdata",
-  "description": "A SplitPHP Framework plugin which provide useful auxiliar data.",
+  "name": "lambdatt-php/suppliers",
+  "description": "A SplitPHP Framework plugin which provides a registration of Suppliers.",
   "type": "splitphp-module",
   "license": "MIT",
   "autoload": {
