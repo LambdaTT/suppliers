@@ -44,7 +44,7 @@ class Supplier extends Service
     if (empty($data['do_state']) || !$this->getService('utils/misc')->validateUF($data['do_state']))
       throw new BadRequest("UF inválido.");
 
-    if (!in_array($data['ds_person_type'], ['F','J'])) 
+    if (!in_array($data['do_person_type'], ['F','J'])) 
       throw new BadRequest("Tipo de pessoa inválida.");
 
     // Set default values
