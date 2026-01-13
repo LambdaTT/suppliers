@@ -14,8 +14,8 @@ class CreateTableSupplier extends Migration
       ->string('ds_key', 17)
       ->datetime('dt_created')->setDefaultValue(DbVocab::SQL_CURTIMESTAMP())
       ->datetime('dt_updated')->nullable()->setDefaultValue(null)
-      ->int('id_iam_user_created')->nullable()->setDefaultValue(null)
-      ->int('id_iam_user_updated')->nullable()->setDefaultValue(null)
+      ->fk('id_iam_user_created')->nullable()->setDefaultValue(null)
+      ->fk('id_iam_user_updated')->nullable()->setDefaultValue(null)
       ->string('ds_name', 100)
       ->string('do_person_type', 1) // F=Física J=Jurídica
       ->string('ds_taxid', 20)

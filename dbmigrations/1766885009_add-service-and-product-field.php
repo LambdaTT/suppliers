@@ -11,7 +11,7 @@ class AddServiceAndProductField extends Migration
   {
     $this->Table('SPL_SUPPLIER')
       ->string('ds_service_product', 255)->nullable()->setDefaultValue(null)
-      ->int('id_adr_address')->nullable()->setDefaultValue(null)
+      ->fk('id_adr_address')->nullable()->setDefaultValue(null)
       ->Foreign('id_adr_address')->references('id_adr_address')->atTable('ADR_ADDRESS')->onUpdate(DbVocab::FKACTION_CASCADE)->onDelete(DbVocab::FKACTION_SETNULL);
   }
 }
