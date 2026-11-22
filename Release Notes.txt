@@ -1,8 +1,8 @@
 🧩 LambdaTT Suppliers - Release Notes
 ---
 
-📦 Version: 0.1.1
-📅 Release Date: 2026-11-17
+📦 Version: 0.1.5
+📅 Release Date: 2026-11-21
 📄 License: MIT
 👤 Authors:
   - Gabriel Valentoni Guelfi (https://github.com/gabriel-guelfi)
