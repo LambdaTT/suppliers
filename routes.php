@@ -5,11 +5,16 @@ namespace Suppliers;
 use SplitPHP\Request;
 use SplitPHP\WebService;
 use SplitPHP\Exceptions\Unauthorized;
+use SplitPHP\ModsManager;
 
 class Routes extends WebService
 {
   const SERVICE = 'suppliers/supplier';
-  const ENTITY = 'SPL_SUPPLIER';
+
+  private const SUPPLIER_PERMISSIONS = [
+    'read'    => 'suppliers.supplier.read',
+    'manage'  => 'suppliers.supplier.manage'
+  ];
 
   public function init()
   {
@@ -18,9 +23,7 @@ class Routes extends WebService
     /////////////////
 
     $this->addEndpoint('GET', "/v1/supplier/?key?", function (Request $req) {
-      $this->auth([
-        self::ENTITY => 'R'
-      ]);
+      $this->auth(self::SUPPLIER_PERMISSIONS);
 
       $params = [
         $req->getRoute()->params['key']
@@ -35,9 +38,7 @@ class Routes extends WebService
     });
 
     $this->addEndpoint('GET', '/v1/supplier', function (Request $req) {
-      $this->auth([
-        self::ENTITY => 'R'
-      ]);
+      $this->auth(self::SUPPLIER_PERMISSIONS);
 
       $params = $req->getBody();
 
@@ -47,9 +48,7 @@ class Routes extends WebService
     });
 
     $this->addEndpoint('POST', '/v1/supplier', function (Request $req) {
-      $this->auth([
-        self::ENTITY => 'C'
-      ]);
+      $this->auth(self::SUPPLIER_PERMISSIONS['manage']);
 
       $data = $req->getBody();
 
@@ -59,9 +58,7 @@ class Routes extends WebService
     });
 
     $this->addEndpoint('PUT', "/v1/supplier/?key?", function (Request $req) {
-      $this->auth([
-        self::ENTITY => 'U'
-      ]);
+      $this->auth(self::SUPPLIER_PERMISSIONS['manage']);
 
       $data = $req->getBody();
       $params = [
@@ -76,9 +73,7 @@ class Routes extends WebService
     });
 
     $this->addEndpoint('DELETE', "/v1/supplier/?key?", function (Request $req) {
-      $this->auth([
-        self::ENTITY => 'U'
-      ]);
+      $this->auth(self::SUPPLIER_PERMISSIONS['manage']);
 
       $params = [
         'ds_key' => $req->getRoute()->params['key']
@@ -92,18 +87,15 @@ class Routes extends WebService
     });
   }
 
-  private function auth(array $permissions)
+  private function auth(array|string $permissions)
   {
-    if (!$this->getService('modcontrol/control')->moduleExists('iam')) return;
+    if (!ModsManager::modExists('iam')) return;
 
     // Auth user login:
     if (!$this->getService('iam/session')->authenticate())
       throw new Unauthorized("Não autorizado.");
 
     // Validate user permissions:
-    // TODO(iam-refactor): entity/CRUD validatePermissions() was removed in the IAM
-    // permissions simplification. Re-enable via tag-based requireAny() once tags exist.
-    // $this->getService('iam/permission')
-    //   ->validatePermissions($permissions);
+    $this->getService('iam/permission')->requireAny($permissions);
   }
 }
